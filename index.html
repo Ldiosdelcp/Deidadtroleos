@@ -75,8 +75,8 @@
                                                                                                                                                                                                                                                                                                 </footer>
 
                                                                                                                                                                                                                                                                                                 </body>
-                                                                                                                                                                                                                                                                                                </html>
-                                                                                                                                                                                                                                                                                               <!DOCTYPE html>
+                                                                                                                                                                                                                                                                   </html>;
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -157,11 +157,10 @@
 
   <!-- Firebase JS SDKs (modular) -->
   <script type="module">
-    // Import Firebase SDK modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-    // Tu configuración Firebase
+    // Tu configuración Firebase (la que me diste)
     const firebaseConfig = {
       apiKey: "AIzaSyC0ebSyPzKShsKHs9PVOCmZTZCEBh7gjsk",
       authDomain: "lucianotroleos.firebaseapp.com",
@@ -172,11 +171,48 @@
       measurementId: "G-3JRT9VD3Q4"
     };
 
-    // Inicializar Firebase y Firestore
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Referencias DOM
     const chatDiv = document.getElementById('chat');
-    const form = docu
- 
+    const form = document.getElementById('chat-form');
+    const usernameInput = document.getElementById('username');
+    const messageInput = document.getElementById('message');
+
+    // Escuchar los mensajes en tiempo real, ordenados por fecha
+    const q = query(collection(db, "chat"), orderBy("fecha"));
+    onSnapshot(q, (querySnapshot) => {
+      chatDiv.innerHTML = "";
+      querySnapshot.forEach((doc) => {
+        const { usuario, mensaje } = doc.data();
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message');
+        msgDiv.innerHTML = `<strong>${usuario}:</strong> ${mensaje}`;
+        chatDiv.appendChild(msgDiv);
+      });
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+    });
+
+    // Enviar mensaje nuevo
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const usuario = usernameInput.value.trim();
+      const mensaje = messageInput.value.trim();
+      if (!usuario || !mensaje) return;
+
+      try {
+        await addDoc(collection(db, "chat"), {
+          usuario,
+          mensaje,
+          fecha: serverTimestamp()
+        });
+        messageInput.value = "";
+        messageInput.focus();
+      } catch (error) {
+        alert("Error al enviar mensaje: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
+
