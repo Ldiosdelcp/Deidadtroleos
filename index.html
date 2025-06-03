@@ -1,178 +1,100 @@
+# Crear una versión responsiva para móviles del archivo HTML
+responsive_html_content = """
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <title>Luciano Troleos | La Deidad</title>
-        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto&display=swap" rel="stylesheet">
-          <style>
-              body {
-                    margin: 0;
-                          font-family: 'Roboto', sans-serif;
-                                background: linear-gradient(135deg, #1f1c2c, #928dab);
-                                      color: white;
-                                            display: flex;
-                                                  flex-direction: column;
-                                                        align-items: center;
-                                                              text-align: center;
-                                                                    min-height: 100vh;
-                                                                        }
-
-                                                                            header {
-                                                                                  padding: 60px 20px 20px;
-                                                                                      }
-
-                                                                                          h1 {
-                                                                                                font-family: 'Orbitron', sans-serif;
-                                                                                                      font-size: 3rem;
-                                                                                                            margin-bottom: 10px;
-                                                                                                                }
-
-                                                                                                                    p {
-                                                                                                                          font-size: 1.2rem;
-                                                                                                                                max-width: 700px;
-                                                                                                                                      margin: auto;
-                                                                                                                                          }
-
-                                                                                                                                              .video-link {
-                                                                                                                                                    display: inline-block;
-                                                                                                                                                          margin-top: 40px;
-                                                                                                                                                                padding: 15px 30px;
-                                                                                                                                                                      font-size: 1.1rem;
-                                                                                                                                                                            background-color: #ff0066;
-                                                                                                                                                                                  border: none;
-                                                                                                                                                                                        border-radius: 30px;
-                                                                                                                                                                                              color: white;
-                                                                                                                                                                                                    text-decoration: none;
-                                                                                                                                                                                                          transition: background 0.3s ease;
-                                                                                                                                                                                                              }
-
-                                                                                                                                                                                                                  .video-link:hover {
-                                                                                                                                                                                                                        background-color: #e6005c;
-                                                                                                                                                                                                                            }
-
-                                                                                                                                                                                                                                footer {
-                                                                                                                                                                                                                                      margin-top: auto;
-                                                                                                                                                                                                                                            padding: 20px;
-                                                                                                                                                                                                                                                  font-size: 0.9rem;
-                                                                                                                                                                                                                                                        opacity: 0.7;
-                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                              </style>
-                                                                                                                                                                                                                                                              </head>
-                                                                                                                                                                                                                                                              <body>
-
-                                                                                                                                                                                                                                                                <header>
-                                                                                                                                                                                                                                                                    <h1>Luciano Troleos</h1>
-                                                                                                                                                                                                                                                                        <p>Bienvenido a La Deidad, el rincón digital donde la creatividad y el caos se encuentran. Aquí comienza la experiencia suprema.</p>
-
-                                                                                                                                                                                                                                                                            <a class="video-link" href="https://www.youtube.com/@lucianotroleos1" target="_blank">
-                                                                                                                                                                                                                                                                                  Ver video en YouTube 🔥
-                                                                                                                                                                                                                                                                                      </a>
-                                                                                                                                                                                                                                                                                        </header>
-
-                                                                                                                                                                                                                                                                                          <footer>
-                                                                                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                                                                                </footer>
-
-                                                                                                                                                                                                                                                                                                </body>
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Chat de Reseñas</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body style="background:#111; color:white; font-family:sans-serif; padding:20px;">
-    <h1>Reseñas</h1>
-
-    <form id="form">
-      <input type="text" id="nombre" placeholder="Tu nombre" required /><br>
-      <textarea id="comentario" placeholder="Tu comentario" required></textarea><br>
-      <select id="puntuacion" required>
-        <option value="">Puntuación</option>
-        <option value="1">⭐</option>
-        <option value="2">⭐⭐</option>
-        <option value="3">⭐⭐⭐</option>
-        <option value="4">⭐⭐⭐⭐</option>
-        <option value="5">⭐⭐⭐⭐⭐</option>
-      </select><br>
-      <button type="submit">Enviar</button>
-    </form>
-
-    <div id="lista" style="margin-top:30px;"></div>
-
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-      import {
-        getFirestore,
-        collection,
-        addDoc,
-        onSnapshot,
-        serverTimestamp,
-        query
-      } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyC0ebSyPzKShsKHs9PVOCmZTZCEBh7gjsk",
-        authDomain: "lucianotroleos.firebaseapp.com",
-        projectId: "lucianotroleos",
-        storageBucket: "lucianotroleos.firebasestorage.app",
-        messagingSenderId: "361170784904",
-        appId: "1:361170784904:web:10287157dfc615212c453d",
-        measurementId: "G-3JRT9VD3Q4"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-
-      const form = document.getElementById("form");
-      const lista = document.getElementById("lista");
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const nombre = document.getElementById("nombre").value.trim();
-        const comentario = document.getElementById("comentario").value.trim();
-        const puntuacion = parseInt(document.getElementById("puntuacion").value);
-        if (!nombre || !comentario || !puntuacion) return;
-
-        await addDoc(collection(db, "reseñas"), {
-          nombre,
-          comentario,
-          puntuacion,
-          fecha: serverTimestamp()
-        });
-
-        form.reset();
-      });
-
-      const q = query(collection(db, "reseñas"));
-
-      onSnapshot(q, (snap) => {
-        const datos = [];
-        snap.forEach(doc => datos.push(doc.data()));
-
-        datos.sort((a, b) => {
-          if (!a.fecha) return 1;
-          if (!b.fecha) return -1;
-          return b.fecha.seconds - a.fecha.seconds;
-        });
-
-        lista.innerHTML = "";
-        for (const r of datos) {
-          let extra = "";
-          if (r.nombre?.toLowerCase() === "luciano troleos") extra = "✅";
-          if (r.nombre?.toLowerCase() === "jhonatan tutoriales") extra = "💩";
-
-          lista.innerHTML += `
-            <div style="background:#222; padding:10px; margin:10px 0; border-radius:8px;">
-              <b>${r.nombre}</b> ${extra}<br>
-              ${"⭐".repeat(r.puntuacion || 0)}<br>
-              ${r.comentario}
-            </div>
-          `;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luciano Troleos</title>
+    <style>
+        * {
+            box-sizing: border-box;
         }
-      });
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #000000, #1a1a2e);
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin: 30px 20px 10px;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+        p {
+            margin: 20px;
+            font-size: 1.1em;
+            line-height: 1.5em;
+        }
+        .btn {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 15px 25px;
+            background: #0077ff;
+            color: white;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 15px #0077ff;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #0055cc;
+        }
+        .animation-container {
+            margin-top: 40px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 10px;
+        }
+        .legendary {
+            margin-top: 20px;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+        .fire-wolf {
+            width: 90%;
+            max-width: 320px;
+            height: auto;
+            animation: pulse 2s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { filter: drop-shadow(0 0 5px #00f2ff); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 20px #00f2ff); transform: scale(1.05); }
+            100% { filter: drop-shadow(0 0 5px #00f2ff); transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Luciano Troleos</h1>
+    <p>La Deidad de los troleos, teman su nombre, el que lo menciona no es nada más que un simple fan. Su nombre retumba en el Universo. La leyenda que vive, hace arder a cualquier persona con sus troleos.</p>
+    <button class="btn" onclick="showAnimation()">Ir al canal</button>
+
+    <div class="animation-container" id="animationContainer">
+        <img src="https://i.ibb.co/kqk2wT0/fire-wolf.gif" alt="Fire Wolf" class="fire-wolf">
+        <div class="legendary">Legendary</div>
+    </div>
+
+    <script>
+        function showAnimation() {
+            document.getElementById('animationContainer').style.display = 'flex';
+            window.open('https://www.youtube.com/@lucianotroleos1', '_blank');
+        }
     </script>
-  </body>
+</body>
 </html>
-© 2025 Luciano Troleos. Todos los derechos reservados.
+"""
+
+# Guardar el archivo responsivo
+responsive_file_path = "/mnt/data/index_responsivo.html"
+with open(responsive_file_path, "w", encoding="utf-8") as f:
+    f.write(responsive_html_content)
+
+responsive_file_path
