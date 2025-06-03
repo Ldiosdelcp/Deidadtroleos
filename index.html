@@ -76,7 +76,7 @@
 
                                                                                                                                                                                                                                                                                                 </body>
                                                                                                                                                                                                                                                                    </html>
-      <!DOCTYPE html>
+      © <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -92,6 +92,120 @@
     .review {
       background: #1f1f1f;
       padding: 15px;
-      border-radius: 10p
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    .review strong {
+      color: #ff0066;
+    }
+    .stars {
+      color: gold;
+    }
+    .verificado {
+      color: #00f0ff;
+      font-weight: bold;
+    }
+    .popo {
+      font-size: 1.2em;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1em;
+    }
+    button {
+      background: #ff0066;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dejá tu reseña</h1>
 
-by:Luciano troleos
+  <form id="review-form">
+    <input type="text" id="nombre" placeholder="Tu nombre" required />
+    <textarea id="comentario" placeholder="Escribí tu reseña..." required></textarea>
+    <select id="puntuacion" required>
+      <option value="">Puntuación</option>
+      <option value="1">⭐️</option>
+      <option value="2">⭐️⭐️</option>
+      <option value="3">⭐️⭐️⭐️</option>
+      <option value="4">⭐️⭐️⭐️⭐️</option>
+      <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+    </select>
+    <button type="submit">Publicar</button>
+  </form>
+
+  <div id="reviews" style="margin-top: 30px;"></div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ebSyPzKShsKHs9PVOCmZTZCEBh7gjsk",
+      authDomain: "lucianotroleos.firebaseapp.com",
+      projectId: "lucianotroleos",
+      storageBucket: "lucianotroleos.firebasestorage.app",
+      messagingSenderId: "361170784904",
+      appId: "1:361170784904:web:10287157dfc615212c453d",
+      measurementId: "G-3JRT9VD3Q4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("review-form");
+    const reviewsDiv = document.getElementById("reviews");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById("nombre").value.trim();
+      const comentario = document.getElementById("comentario").value.trim();
+      const puntuacion = parseInt(document.getElementById("puntuacion").value);
+
+      if (!nombre || !comentario || !puntuacion) return;
+
+      await addDoc(collection(db, "reseñas"), {
+        nombre,
+        comentario,
+        puntuacion,
+        fecha: serverTimestamp()
+      });
+
+      form.reset();
+    });
+
+    const q = query(collection(db, "reseñas"), orderBy("fecha", "desc"));
+    onSnapshot(q, (snapshot) => {
+      reviewsDiv.innerHTML = "";
+      snapshot.forEach(doc => {
+        const r = doc.data();
+        const estrellas = "⭐️".repeat(r.puntuacion || 0);
+        let extra = "";
+
+        if (r.nombre.toLowerCase() === "luciano troleos") {
+          extra = `<span class="verificado">✅</span>`;
+        } else if (r.nombre.toLowerCase() === "jhonatan tutoriales") {
+          extra = `<span class="popo">💩</span>`;
+        }
+
+        const div = document.createElement("div");
+        div.className = "review";
+        div.innerHTML = `
+          <div><strong>${r.nombre}</strong> ${extra}</div>
+          <div class="stars">${estrellas}</div>
+          <p>${r.comentario}</p>
+        `;
+        reviewsDiv.appendChild(div);
+      });
+    });
+  </script>
+</body>
+</html>
+© 2025 Luciano Troleos. Todos los derechos reservados.
