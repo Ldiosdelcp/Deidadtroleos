@@ -181,28 +181,42 @@
       form.reset();
     });
 
-    const q = query(collection(db, "reseñas"), orderBy("fecha", "desc"));
-    onSnapshot(q, (snapshot) => {
-      reviewsDiv.innerHTML = "";
-      snapshot.forEach(doc => {
-        const r = doc.data();
-        const estrellas = "⭐️".repeat(r.puntuacion || 0);
-        let extra = "";
+    import { query, collection, orderBy, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-        if (r.nombre.toLowerCase() === "luciano troleos") {
-          extra = `<span class="verificado">✅</span>`;
-        } else if (r.nombre.toLowerCase() === "jhonatan tutoriales") {
-          extra = `<span class="popo">💩</span>`;
-        }
+const q = query(collection(db, "reseñas"));
+ onSnapshot(q, (snapshot) => {
+  const data = [];
+  snapshot.forEach(doc => data.push(doc.data()));
 
-        const div = document.createElement("div");
-        div.className = "review";
-        div.innerHTML = `
-          <div><strong>${r.nombre}</strong> ${extra}</div>
-          <div class="stars">${estrellas}</div>
-          <p>${r.comentario}</p>
-        `;
-        reviewsDiv.appendChild(div);
+  // Ordenar por fecha manualmente, si existe
+  data.sort((a, b) => {
+    if (!a.fecha) return 1;
+    if (!b.fecha) return -1;
+    return b.fecha.seconds - a.fecha.seconds;
+  });
+
+  reviewsDiv.innerHTML = "";
+  data.forEach(r => {
+    const estrellas = "⭐️".repeat(r.puntuacion || 0);
+    let extra = "";
+
+    if (r.nombre?.toLowerCase() === "luciano troleos") {
+      extra = `<span class="verificado">✅</span>`;
+    } else if (r.nombre?.toLowerCase() === "jhonatan tutoriales") {
+      extra = `<span class="popo">💩</span>`;
+    }
+
+    const div = document.createElement("div");
+    div.className = "review";
+    div.innerHTML = `
+      <div><strong>${r.nombre}</strong> ${extra}</div>
+      <div class="stars">${estrellas}</div>
+      <p>${r.comentario}</p>
+    `;
+    reviewsDiv.appendChild(div);
+  });
+});
+;
       });
     });
   </script>
